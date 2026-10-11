@@ -49,6 +49,14 @@ export const hours = [
 // Gallery: Higgsfield-retouched versions of the salon's own Google Maps / Instagram photos.
 // "tag" links each photo to its service guide.
 export const gallery = [
+  { key: "nails-s8", tag: "acrylic-nails", alt: "Long coffin nails with black-and-white stripes, baby blue accents and black stars" },
+  { key: "nails-s7", tag: "french-tip-nails", alt: "Hot pink French tip nails with hand-painted white flowers and rhinestones" },
+  { key: "nails-s4", tag: "french-tip-nails", alt: "Almond nails with neon rainbow swirl French tips" },
+  { key: "nails-s1", tag: "acrylic-nails", alt: "Long square nails with neon pink tips and sheer pink marble swirls" },
+  { key: "nails-s6", tag: "french-tip-nails", alt: "Square white French tip nails with rows of rhinestones" },
+  { key: "nails-s2", tag: "french-tip-nails", alt: "Soft almond nails with pastel yellow French tips" },
+  { key: "nails-s3", tag: "nail-art", alt: "Sheer pink square nails with gold foil leaf accents" },
+  { key: "nails-s5", tag: "nail-art", alt: "Natural almond nails with delicate gold glitter accents" },
   { key: "nails-01", tag: "french-tip-nails", alt: "Nude French tip nails with a crystal accent stripe on a lavender backdrop" },
   { key: "nails-07", tag: "acrylic-nails", alt: "Long coffin acrylic nails in sky-blue glitter" },
   { key: "nails-12", tag: "nail-art", alt: "Orange and pink marble nail art with rhinestone accents" },
@@ -56,7 +64,6 @@ export const gallery = [
   { key: "nails-24", tag: "nail-art", alt: "Pink stiletto nails with silver glitter and multicolor rhinestones" },
   { key: "nails-28", tag: "acrylic-nails", alt: "Mauve almond nails with crystal rhinestone accents" },
   { key: "nails-30", tag: "french-tip-nails", alt: "Short square French tip nails held around a coffee cup" },
-  { key: "nails-35", tag: "nail-art", alt: "Long coffin nails in white and chrome silver with a monogram pattern" },
   { key: "nails-09", tag: "french-tip-nails", alt: "Deep white French tip coffin nails with a crystal gem accent" },
   { key: "nails-22", tag: "nail-art", alt: "Burnt orange coffin nails with gold glitter and rhinestones" },
   { key: "nails-08", tag: "acrylic-nails", alt: "Milky white coffin nails with rhinestone accent nails" },
@@ -72,7 +79,6 @@ export const gallery = [
   { key: "nails-03", tag: "nail-art", alt: "Long sheer pink nails with fine white line art" },
   { key: "nails-26", tag: "classic-manicure", alt: "Short rounded nails in deep burgundy polish" },
   { key: "nails-31", tag: "acrylic-nails", alt: "Pale pink square nails with a gold-flake accent nail" },
-  { key: "nails-13", tag: "nail-art", alt: "Short nails with a black-to-silver glitter fade" },
 ];
 export const extraImages = {
   "pedicure-chairs": "Row of white pedicure spa chairs with glowing foot basins at Top Creative Nails",

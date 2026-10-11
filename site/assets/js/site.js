@@ -67,7 +67,7 @@
     const ring = document.getElementById("spot-ring");
     const data = JSON.parse(document.getElementById("spot-data").textContent);
     const WORKS = data.works;
-    const CFG = { slots: data.slots, cardScale: 1, cardRatio: 1.36, radiusK: 3, arcDepth: 0.7, perspective: 1, drag: 0.16, damp: 0.94 };
+    const CFG = { slots: data.slots, cardScale: 1, cardRatio: 1.36, radiusK: 4.4, arcDepth: 0.48, perspective: 1.35, drag: 0.11, damp: 0.94 };
     const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const pad2 = (n) => String(n).padStart(2, "0");
     const stepDeg = () => 360 / CFG.slots;
@@ -95,6 +95,8 @@
     const render = () => {
       const fs = frontSlot();
       if (fs !== lastFrontSlot) { cards[lastFrontSlot].classList.remove("-front"); cards[fs].classList.add("-front"); lastFrontSlot = fs; }
+      // pull in the images that are about to rotate into view
+      for (let k = -5; k <= 5; k++) { const im = cards[(((fs + k) % CFG.slots) + CFG.slots) % CFG.slots].querySelector("img"); if (im.loading === "lazy") im.loading = "eager"; }
       const ci = fs % WORKS.length;
       if (ci !== lastCard) {
         const w = WORKS[ci];

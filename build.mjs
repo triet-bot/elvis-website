@@ -280,7 +280,7 @@ const faqList = (list) => `<div class="faq">${list.map((f) => `<details class="f
 const serviceLink = (slug) => `<a href="/services/${slug}/">${bySlug[slug].name}</a>`;
 
 // ---------- home hero: 3D carousel of the salon's own sets ----------
-const SPOT_SLOTS = 14;
+// 20 unique sets, one per ring slot, so a full lap shows every set once before repeating.
 const spotWorks = [
   { key: "nails-07", title: "Blue Glitter Coffin" },
   { key: "nails-12", title: "Sunset Marble" },
@@ -289,10 +289,24 @@ const spotWorks = [
   { key: "nails-24", title: "Pink Stiletto" },
   { key: "nails-28", title: "Mauve Almond" },
   { key: "nails-10", title: "Mint Glitter Fade" },
+  { key: "nails-02", title: "Lavender Stiletto" },
+  { key: "nails-s1", title: "Neon Pink Marble" },
+  { key: "nails-22", title: "Burnt Orange & Gold" },
+  { key: "nails-18", title: "White Lace Almond" },
+  { key: "nails-s3", title: "Rose Gold Foil" },
+  { key: "nails-s8", title: "Blue Star Stripes" },
+  { key: "nails-15", title: "Zebra & Star" },
+  { key: "nails-s7", title: "Pink Floral French" },
+  { key: "nails-09", title: "Deep French Gem" },
+  { key: "nails-34", title: "Bow French" },
+  { key: "nails-s6", title: "Jeweled White French" },
+  { key: "nails-s4", title: "Neon Rainbow French" },
+  { key: "nails-31", title: "Blush Gold Flake" },
 ].map((w) => {
   const g = gallery.find((x) => x.key === w.key);
   return { ...w, alt: g.alt, href: `/services/${g.tag}/`, meta: bySlug[g.tag].name };
 });
+const SPOT_SLOTS = spotWorks.length;
 const pad2 = (n) => String(n).padStart(2, "0");
 function spotHero() {
   const step = 360 / SPOT_SLOTS;
@@ -301,7 +315,7 @@ function spotHero() {
     const w = spotWorks[i % spotWorks.length];
     return `<article class="card${i === 0 ? " -front" : ""}" data-slot="${i}" style="--a:${(i * step).toFixed(4)}deg">
       <div class="card__inner">
-        <img src="/assets/img/${w.key}-540.webp" width="540" height="675" alt="${esc(w.alt)}" draggable="false"${i === 0 ? ' fetchpriority="high"' : ''} decoding="async">
+        <img src="/assets/img/${w.key}-540.webp" width="540" height="675" alt="${esc(w.alt)}" draggable="false"${i === 0 ? ' fetchpriority="high"' : i <= 4 || i >= SPOT_SLOTS - 4 ? '' : ' loading="lazy"'} decoding="async">
         <div class="card__scrim"></div>
         <span class="card__no">${pad2((i % spotWorks.length) + 1)}</span>
         <div class="card__foot"><h3 class="card__title">${w.title}</h3></div>
@@ -339,7 +353,7 @@ function spotHero() {
 // ---------- pages ----------
 function home() {
   const fav = ["acrylic-nails", "pedicure", "dip-powder-nails", "french-tip-nails", "nail-art", "gel-manicure", "nail-repair", "eyebrow-waxing"];
-  const grid = ["nails-01", "nails-07", "nails-12", "nails-15", "nails-24", "nails-28", "nails-30", "nails-35"];
+  const grid = ["nails-s8", "nails-s7", "nails-12", "nails-s4", "nails-24", "nails-s1", "nails-07", "nails-s6"];
   const navList = {
     "@context": "https://schema.org",
     "@type": "ItemList",

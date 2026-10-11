@@ -212,7 +212,7 @@ p { margin: 0 0 1em; }
   font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; font-weight: 700; color: var(--spot-ink-3);
   pointer-events: none; user-select: none; opacity: .9; white-space: nowrap; }
 
-@media (max-width: 1600px) { .spot__edge { display: none; } }
+@media (max-width: 2400px) { .spot__edge { display: none; } }
 @media (max-width: 1024px) { .spot__ghost { font-size: 34vh; } }
 @media (max-width: 760px) {
   .spot { min-height: 600px; max-height: 700px; }
