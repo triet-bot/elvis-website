@@ -279,6 +279,63 @@ const faqList = (list) => `<div class="faq">${list.map((f) => `<details class="f
 
 const serviceLink = (slug) => `<a href="/services/${slug}/">${bySlug[slug].name}</a>`;
 
+// ---------- home hero: 3D carousel of the salon's own sets ----------
+const SPOT_SLOTS = 14;
+const spotWorks = [
+  { key: "nails-07", title: "Blue Glitter Coffin" },
+  { key: "nails-12", title: "Sunset Marble" },
+  { key: "nails-01", title: "Crystal French" },
+  { key: "nails-33", title: "Lemon Ombre" },
+  { key: "nails-24", title: "Pink Stiletto" },
+  { key: "nails-28", title: "Mauve Almond" },
+  { key: "nails-10", title: "Mint Glitter Fade" },
+].map((w) => {
+  const g = gallery.find((x) => x.key === w.key);
+  return { ...w, alt: g.alt, href: `/services/${g.tag}/`, meta: bySlug[g.tag].name };
+});
+const pad2 = (n) => String(n).padStart(2, "0");
+function spotHero() {
+  const step = 360 / SPOT_SLOTS;
+  const first = spotWorks[0];
+  const cards = Array.from({ length: SPOT_SLOTS }, (_, i) => {
+    const w = spotWorks[i % spotWorks.length];
+    return `<article class="card${i === 0 ? " -front" : ""}" data-slot="${i}" style="--a:${(i * step).toFixed(4)}deg">
+      <div class="card__inner">
+        <img src="/assets/img/${w.key}-540.webp" width="540" height="675" alt="${esc(w.alt)}" draggable="false"${i === 0 ? ' fetchpriority="high"' : ''} decoding="async">
+        <div class="card__scrim"></div>
+        <span class="card__no">${pad2((i % spotWorks.length) + 1)}</span>
+        <div class="card__foot"><h3 class="card__title">${w.title}</h3></div>
+      </div>
+    </article>`;
+  }).join("");
+  return `<section class="spot" id="spot" aria-label="Top Creative Nails">
+  <div class="spot__stage" id="spot-stage" tabindex="0" role="region" aria-label="Nail gallery: draggable 3D carousel. Use the left and right arrow keys to move between sets.">
+    <div class="spot__floor" aria-hidden="true"></div>
+    <div class="spot__ghost" id="spot-ghost" aria-hidden="true">01</div>
+    <div class="spot__ring" id="spot-ring">${cards}</div>
+  </div>
+  <div class="spot__frame" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+  <div class="spot__mast">
+    <span class="spot__eyebrow">830 Mayfield Rd · Grand Prairie, TX</span>
+    <h1 class="spot__title">Top Creative <em>Nails</em><span>Nail salon in Grand Prairie, TX · Walk-ins welcome</span></h1>
+    <div class="cta-row">${bookBtn("Call to book")}<a class="btn btn--outline" href="/services/">See services</a></div>
+  </div>
+  <span class="spot__edge -l" aria-hidden="true">Walk-ins welcome · Mon – Sat</span>
+  <span class="spot__edge -r" aria-hidden="true">Mon–Thu 10–7 · Fri–Sat 9–7</span>
+  <span class="spot__hint" aria-hidden="true">Drag · swipe · arrow keys</span>
+  <div class="spot__dock">
+    <div class="spot__count"><b id="spot-cur">01</b> <i>/ ${pad2(spotWorks.length)}</i></div>
+    <div class="spot__cap" aria-live="polite">
+      <h2 id="spot-title">${first.title}</h2>
+      <div class="spot__sub"><span id="spot-meta">${first.meta}</span><span class="spot__pip"></span><a id="spot-link" href="${first.href}">See this service →</a></div>
+      <div class="spot__dots" id="spot-dots" role="tablist" aria-label="Jump to set">${spotWorks.map((w, i) => `<button role="tab" aria-label="Go to ${esc(w.title)}"${i === 0 ? ' class="-on" aria-selected="true"' : ""}></button>`).join("")}</div>
+    </div>
+    <div class="spot__nav"><button class="spot__btn" id="spot-prev" aria-label="Previous set">‹</button><button class="spot__btn" id="spot-next" aria-label="Next set">›</button></div>
+  </div>
+  <script type="application/json" id="spot-data">${JSON.stringify({ slots: SPOT_SLOTS, works: spotWorks.map(({ title, meta, href }) => ({ title, meta, href })) }).replace(/</g, "\\u003c")}</script>
+</section>`;
+}
+
 // ---------- pages ----------
 function home() {
   const fav = ["acrylic-nails", "pedicure", "dip-powder-nails", "french-tip-nails", "nail-art", "gel-manicure", "nail-repair", "eyebrow-waxing"];
@@ -299,23 +356,7 @@ function home() {
     description: "Nail salon on Mayfield Rd in Grand Prairie, TX. Acrylic full sets and fills, dip powder, gel, pedicures, French tips and custom nail art. Walk-ins welcome.",
     schema: [salonSchema(), website, navList],
     body: `
-<section class="hero">
-  <div class="hero__media">
-    <img src="/assets/img/salon-interior-2000.webp" srcset="/assets/img/salon-interior-800.webp 800w, /assets/img/salon-interior-1200.webp 1200w, /assets/img/salon-interior-2000.webp 2000w" sizes="100vw" width="2000" height="1130" alt="Inside Top Creative Nails: white pedicure spa chairs, manicure stations and a wall of polish" fetchpriority="high">
-    <div class="hero__scrim" aria-hidden="true"></div>
-  </div>
-  <div class="hero__inner">
-    <div class="wrap hero__layout">
-      <div class="hero__copy">
-        <p class="eyebrow eyebrow--light">830 Mayfield Rd · Grand Prairie, TX</p>
-        <h1 class="hero__title">Top Creative Nails <span>Nail salon in Grand Prairie, TX</span></h1>
-        <p class="hero__lede">Acrylic, dip and gel sets, relaxing pedicures and nail art built from your photo. Walk-ins welcome six days a week.</p>
-        <div class="cta-row">${bookBtn("Call to book")}<a class="btn btn--ghost-light" href="/services/">See services</a></div>
-        <p class="hero__hours">${hoursLine}</p>
-      </div>
-    </div>
-  </div>
-</section>
+${spotHero()}
 
 <section class="band band--tight">
   <ul class="wrap values">

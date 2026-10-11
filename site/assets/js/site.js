@@ -60,6 +60,105 @@
     render();
   });
 
+  // Home hero: infinite 3D concave-arc carousel with snap-to-card settling
+  const spot = document.getElementById("spot");
+  if (spot) {
+    const stage = document.getElementById("spot-stage");
+    const ring = document.getElementById("spot-ring");
+    const data = JSON.parse(document.getElementById("spot-data").textContent);
+    const WORKS = data.works;
+    const CFG = { slots: data.slots, cardScale: 1, cardRatio: 1.36, radiusK: 3, arcDepth: 0.7, perspective: 1, drag: 0.16, damp: 0.94 };
+    const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const stepDeg = () => 360 / CFG.slots;
+    const cards = [...ring.querySelectorAll(".card")];
+    const dots = [...document.querySelectorAll("#spot-dots button")];
+    const $ = (id) => document.getElementById(id);
+    const ui = { cur: $("spot-cur"), title: $("spot-title"), meta: $("spot-meta"), link: $("spot-link"), ghost: $("spot-ghost") };
+
+    const layout = () => {
+      const vw = innerWidth;
+      // phones get proportionally larger cards so the arc fills the screen
+      const cw = (vw < 760 ? Math.min(230, vw * 0.5) : Math.min(238, Math.max(150, vw * 0.17))) * CFG.cardScale;
+      const ch = cw * CFG.cardRatio, r = cw * CFG.radiusK;
+      stage.style.setProperty("--cw", cw + "px");
+      stage.style.setProperty("--ch", ch + "px");
+      stage.style.setProperty("--r", r + "px");
+      stage.style.setProperty("--push", r * (1 - CFG.arcDepth) + "px");
+      stage.style.perspective = Math.max(700, vw * 0.8 * CFG.perspective) + "px";
+    };
+
+    let rot = 0, vel = 0, dragging = false, lastX = 0, downX = 0, moved = false, targetIndex = 0, settled = true, lastRot = NaN;
+    let lastFrontSlot = 0, lastCard = 0;
+    const applyRot = () => { if (rot !== lastRot) { ring.style.setProperty("--rot", rot + "deg"); lastRot = rot; } };
+    const frontSlot = () => ((Math.round(-rot / stepDeg()) % CFG.slots) + CFG.slots) % CFG.slots;
+    const render = () => {
+      const fs = frontSlot();
+      if (fs !== lastFrontSlot) { cards[lastFrontSlot].classList.remove("-front"); cards[fs].classList.add("-front"); lastFrontSlot = fs; }
+      const ci = fs % WORKS.length;
+      if (ci !== lastCard) {
+        const w = WORKS[ci];
+        ui.title.textContent = w.title; ui.meta.textContent = w.meta; ui.link.href = w.href;
+        ui.cur.textContent = ui.ghost.textContent = pad2(ci + 1);
+        dots.forEach((d, i) => { d.classList.toggle("-on", i === ci); d.setAttribute("aria-selected", String(i === ci)); });
+        lastCard = ci;
+      }
+    };
+    const nearestCenter = () => Math.round(-rot / stepDeg());
+    const go = (delta) => { targetIndex = nearestCenter() + delta; settled = true; vel = 0; };
+    const focusBy = (i, n) => {
+      const cs = nearestCenter();
+      let d = (((i - (cs % n)) % n) + n) % n;
+      if (d > n / 2) d -= n;
+      targetIndex = cs + d; settled = true; vel = 0;
+    };
+
+    stage.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      dragging = true; lastX = downX = e.clientX; moved = false; vel = 0; settled = false;
+      stage.classList.add("-drag");
+      stage.setPointerCapture(e.pointerId);
+    });
+    stage.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX; lastX = e.clientX;
+      if (Math.abs(e.clientX - downX) > 6) moved = true;
+      const d = -dx * CFG.drag; rot += d; vel = d;
+    });
+    stage.addEventListener("pointerup", (e) => {
+      dragging = false; settled = false; stage.classList.remove("-drag");
+      if (!moved) {
+        const el = document.elementFromPoint(e.clientX, e.clientY);
+        const card = el && el.closest(".card");
+        if (card) focusBy(+card.dataset.slot, CFG.slots);
+      }
+    });
+    stage.addEventListener("pointercancel", () => { dragging = false; stage.classList.remove("-drag"); });
+    stage.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+    });
+    $("spot-next").addEventListener("click", () => go(1));
+    $("spot-prev").addEventListener("click", () => go(-1));
+    dots.forEach((d, i) => d.addEventListener("click", () => focusBy(i, WORKS.length)));
+
+    const tick = () => {
+      if (!dragging) {
+        rot += vel; vel *= CFG.damp;
+        if (Math.abs(vel) < 0.05) {
+          if (!settled) { targetIndex = nearestCenter(); settled = true; }
+          const diff = -targetIndex * stepDeg() - rot;
+          if (Math.abs(diff) < 0.01) rot = -targetIndex * stepDeg();
+          else rot += diff * (REDUCE ? 1 : 0.14);
+        } else settled = false;
+      }
+      applyRot(); render();
+      requestAnimationFrame(tick);
+    };
+    layout(); applyRot(); render(); tick();
+    addEventListener("resize", layout);
+  }
+
   // Promotion popup: first visit only, dismissable, Escape closes
   const promo = document.getElementById("promo");
   const KEY = "tcn-promo-dismissed";
