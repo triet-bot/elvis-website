@@ -5,7 +5,7 @@ export const site = {
   name: "Top Creative Nails",
   altName: "The Top Creative Nails",
   // LAUNCH STEP: set to the real domain and flip indexable to true, then rebuild.
-  domain: "https://elvis-website.vercel.app",
+  domain: "https://topcreativenails.com",
   indexable: false,
   phone: "(972) 264-2744",
   tel: "+19722642744",
