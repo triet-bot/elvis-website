@@ -5,8 +5,8 @@ export const site = {
   name: "Top Creative Nails",
   altName: "The Top Creative Nails",
   // LAUNCH STEP: set to the real domain and flip indexable to true, then rebuild.
-  domain: "https://topcreativenails.com",
-  indexable: false,
+  domain: "https://www.topcreativenails.com",
+  indexable: true,
   phone: "(972) 264-2744",
   tel: "+19722642744",
   street: "830 Mayfield Rd, Suite 500",

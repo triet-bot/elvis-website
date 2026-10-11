@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://topcreativenails.com/sitemap.xml
+Sitemap: https://www.topcreativenails.com/sitemap.xml
