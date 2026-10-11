@@ -142,14 +142,35 @@
     $("spot-prev").addEventListener("click", () => go(-1));
     dots.forEach((d, i) => d.addEventListener("click", () => focusBy(i, WORKS.length)));
 
-    const tick = () => {
+    // Autoplay: glide to the next card every AUTO_MS. Pauses on hover, keyboard focus, any
+    // interaction (resumes after IDLE_MS), when the hero is off-screen, and never runs for
+    // reduced-motion users.
+    const AUTO_MS = 3200, IDLE_MS = 6000;
+    let hovering = false, focused = false, inView = true, ease = 0.14;
+    let lastInteract = -Infinity, lastAdvance = performance.now();
+    const interact = () => { lastInteract = performance.now(); ease = 0.14; };
+    stage.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hovering = true; });
+    stage.addEventListener("pointerleave", () => { hovering = false; });
+    stage.addEventListener("focus", () => { focused = true; });
+    stage.addEventListener("blur", () => { focused = false; });
+    ["pointerdown", "keydown"].forEach((t) => stage.addEventListener(t, interact));
+    [$("spot-next"), $("spot-prev"), ...dots].forEach((b) => b.addEventListener("click", interact));
+    if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => { inView = e.isIntersecting; }).observe(spot);
+    const autoplay = (now) => {
+      if (REDUCE || dragging || hovering || focused || !inView || document.hidden) { lastAdvance = now; return; }
+      if (now - lastInteract < IDLE_MS || Math.abs(vel) >= 0.05) { lastAdvance = now; return; }
+      if (now - lastAdvance >= AUTO_MS) { go(1); ease = 0.06; lastAdvance = now; }
+    };
+
+    const tick = (now = performance.now()) => {
+      autoplay(now);
       if (!dragging) {
         rot += vel; vel *= CFG.damp;
         if (Math.abs(vel) < 0.05) {
           if (!settled) { targetIndex = nearestCenter(); settled = true; }
           const diff = -targetIndex * stepDeg() - rot;
           if (Math.abs(diff) < 0.01) rot = -targetIndex * stepDeg();
-          else rot += diff * (REDUCE ? 1 : 0.14);
+          else rot += diff * (REDUCE ? 1 : ease);
         } else settled = false;
       }
       applyRot(); render();
