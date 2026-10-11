@@ -268,3 +268,19 @@ p { margin: 0 0 1em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* lists of tips (service aftercare, visit tips) */
+.tips { margin: 0 0 1rem; padding-left: 1.2rem; }
+.tips li { margin-bottom: 0.6rem; }
+.tips li::marker { color: var(--accent); }
+
+/* comparison table (guides) */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+.compare { width: 100%; border-collapse: collapse; min-width: 34rem; font-size: 0.95rem; }
+.compare th, .compare td { text-align: left; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.compare thead th { font: 600 1.05rem/1.2 var(--font-display); background: var(--accent-tint); }
+.compare tbody th { font-weight: 700; white-space: nowrap; }
+.compare tr:last-child th, .compare tr:last-child td { border-bottom: 0; }
+
+.prose h2 { margin-top: 1.8em; }
+.prose h2:first-child { margin-top: 0; }

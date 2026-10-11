@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { site, hours, gallery, extraImages, serviceCategories, services, reviews, faqs, nav, navMore } from "./data.mjs";
+import { serviceDetails } from "./service-details.mjs";
+import { guides, spanish } from "./pages-extra.mjs";
 
 const OUT = path.resolve("site");
 const D = site.domain;
@@ -43,7 +45,7 @@ function salonSchema() {
     description: "Nail salon in Grand Prairie, TX offering acrylic nails, dip powder, gel and classic manicures, pedicures, French tips, custom nail art, nail repair and eyebrow waxing. Walk-ins welcome.",
     url: `${D}/`,
     telephone: site.tel,
-    image: [`${D}/assets/img/og-image.jpg`, `${D}/assets/img/nails-07-1080.webp`, `${D}/assets/img/nails-12-1080.webp`],
+    image: [`${D}/assets/img/og-image.jpg`, `${D}/assets/img/salon-interior-2000.webp`, `${D}/assets/img/pedicure-chairs-1080.webp`, `${D}/assets/img/nails-07-1080.webp`, `${D}/assets/img/nails-12-1080.webp`],
     logo: `${D}/assets/img/logo-512.png`,
     address: { "@type": "PostalAddress", streetAddress: site.street, addressLocality: site.city, addressRegion: site.region, postalCode: site.zip, addressCountry: "US" },
     geo: { "@type": "GeoCoordinates", latitude: site.lat, longitude: site.lng },
@@ -92,13 +94,16 @@ const faqSchema = (list) => ({
 });
 
 // ---------- layout ----------
-function head({ title, description, pathName, ogImage = "/assets/img/og-image.jpg", schema = [] }) {
+// Home and the Spanish page point at each other with hreflang.
+const langPairs = [{ lang: "en", href: "/" }, { lang: "es", href: "/es/" }, { lang: "x-default", href: "/" }];
+function head({ title, description, pathName, ogImage = "/assets/img/og-image.jpg", schema = [], lang = "en" }) {
+  const alternates = pathName === "/" || pathName === "/es/" ? langPairs : [];
   if (title.length > 60) warnings.push(`title > 60 (${title.length}): ${pathName}`);
   if (description.length > 160 || description.length < 110) warnings.push(`description ${description.length} chars: ${pathName}`);
   const url = `${D}${pathName}`;
   const robots = site.indexable ? "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" : "noindex, nofollow";
   return `<!doctype html>
-<html lang="en">
+<html lang="${lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -140,10 +145,11 @@ function head({ title, description, pathName, ogImage = "/assets/img/og-image.jp
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/assets/img/favicon-256.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/assets/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
+${alternates.map((a) => `<link rel="alternate" hreflang="${a.lang}" href="${D}${a.href}">`).join("\n")}
 ${schema.map(ld).join("\n")}
 </head>`;
 }
@@ -230,8 +236,8 @@ function promo() {
 </div>`;
 }
 
-function page({ pathName, title, description, schema, body, current, ogImage }) {
-  const html = `${head({ title, description, pathName, schema, ogImage })}
+function page({ pathName, title, description, schema, body, current, ogImage, lang }) {
+  const html = `${head({ title, description, pathName, schema, ogImage, lang })}
 <body>
 ${header(current)}
 <main id="main">
@@ -295,7 +301,7 @@ function home() {
     body: `
 <section class="hero">
   <div class="hero__media">
-    <img src="/assets/img/salon-interior-2000.webp" srcset="/assets/img/salon-interior-1200.webp 1200w, /assets/img/salon-interior-2000.webp 2000w" sizes="100vw" width="2000" height="1130" alt="Inside Top Creative Nails: white pedicure spa chairs, manicure stations and a wall of polish" fetchpriority="high">
+    <img src="/assets/img/salon-interior-2000.webp" srcset="/assets/img/salon-interior-800.webp 800w, /assets/img/salon-interior-1200.webp 1200w, /assets/img/salon-interior-2000.webp 2000w" sizes="100vw" width="2000" height="1130" alt="Inside Top Creative Nails: white pedicure spa chairs, manicure stations and a wall of polish" fetchpriority="high">
     <div class="hero__scrim" aria-hidden="true"></div>
   </div>
   <div class="hero__inner">
@@ -456,7 +462,7 @@ function servicePage(s) {
     current: "/services/",
     title: s.title,
     description: s.description,
-    schema: [breadcrumb(trail), svc],
+    schema: [breadcrumb(trail), svc, ...(serviceDetails[s.slug] ? [faqSchema(serviceDetails[s.slug].faqs)] : [])],
     ogImage: s.img ? `/assets/img/${s.img}-1080.webp` : undefined,
     body: `
 <section class="page-head"><div class="wrap">${crumbs(trail)}</div></section>
@@ -478,6 +484,20 @@ function servicePage(s) {
     <p><a href="/services/#${s.cat}">See it with the other ${serviceCategories.find((c) => c.id === s.cat).name.toLowerCase()} →</a></p>
   </div>
 </section>
+${serviceDetails[s.slug] ? (() => { const d = serviceDetails[s.slug]; return `<section class="band band--soft band--tight">
+  <div class="wrap narrow">
+    <h2>Time and wear</h2>
+    <dl class="items"><div><dt>How long it takes</dt><dd>${esc(d.time)}</dd></div><div><dt>How long it lasts</dt><dd>${esc(d.lasts)}</dd></div></dl>
+    <h2>Aftercare tips</h2>
+    <ul class="tips">${d.aftercare.map((t) => `<li>${t}</li>`).join("")}</ul>
+  </div>
+</section>
+<section class="band band--tight">
+  <div class="wrap narrow">
+    <h2>${s.name} questions</h2>
+    ${faqList(d.faqs)}
+  </div>
+</section>`; })() : ""}
 ${photos.length ? `<section class="band band--tight"><div class="wrap"><h2>More ${s.name.toLowerCase()} from the salon</h2><ul class="grid grid--4">${photos.slice(0, 4).map((g) => `<li>${img(g.key, g.alt, { sizes: "(max-width: 700px) 50vw, 25vw" })}</li>`).join("")}</ul></div></section>` : ""}
 <section class="band band--soft band--tight">
   <div class="wrap narrow">
@@ -490,6 +510,10 @@ ${photos.length ? `<section class="band band--tight"><div class="wrap"><h2>More 
 }
 const priceNote = "Pricing depends on length, shape and design. Call or ask at the front desk for today's price.";
 
+const galleryGroups = [
+  { title: "Acrylic sets and French tips", tags: ["acrylic-nails", "french-tip-nails"], intro: 'Long coffins, almonds and stilettos, plus classic, deep and soft French tips. Read about <a href="/services/acrylic-nails/">acrylic nails</a> and <a href="/services/french-tip-nails/">French tips</a>.' },
+  { title: "Nail art and natural nails", tags: ["nail-art", "classic-manicure", "gel-manicure", "dip-powder-nails"], intro: 'Marble, zebra lines, lace, glitter fades, chrome and rhinestones, plus clean short sets. See <a href="/services/nail-art/">nail art and designs</a>.' },
+];
 function galleryPage() {
   const trail = [{ name: site.name, href: "/" }, { name: "Gallery", href: "/gallery/" }];
   page({
@@ -503,11 +527,13 @@ function galleryPage() {
   <h1>Nail art gallery</h1>
   <p class="lede">Sets done in our Grand Prairie salon. Tap a photo to read about the service, then bring a screenshot to your appointment. More on Instagram at <a href="${site.instagram}" target="_blank" rel="noopener">${site.instagramHandle}</a>.</p>
 </div></section>
-<section class="band band--tight"><div class="wrap">
+${galleryGroups.map((grp, i) => `<section class="band band--tight${i % 2 ? " band--soft" : ""}"><div class="wrap">
+  <h2>${grp.title}</h2>
+  <p class="lede">${grp.intro}</p>
   <ul class="grid grid--3">
-    ${gallery.map((g) => `<li><a class="tile" href="/services/${g.tag}/">${img(g.key, g.alt, { sizes: "(max-width: 700px) 50vw, 33vw" })}<span>${bySlug[g.tag].name}</span></a></li>`).join("")}
+    ${gallery.filter((g) => grp.tags.includes(g.tag)).map((g) => `<li><a class="tile" href="/services/${g.tag}/">${img(g.key, g.alt, { sizes: "(max-width: 700px) 50vw, 33vw" })}<span>${bySlug[g.tag].name}</span></a></li>`).join("")}
   </ul>
-</div></section>
+</div></section>`).join("")}
 <section class="band band--soft band--tight"><div class="wrap cta-row cta-row--center">${bookBtn("Call to book this look")}<a class="btn btn--outline" href="/services/nail-art/">About our nail art →</a></div></section>`,
   });
 }
@@ -530,6 +556,13 @@ function aboutPage() {
       <p>Creative is in the name for a reason. Our techs build long <a href="/services/acrylic-nails/">acrylic sets</a>, strong <a href="/services/dip-powder-nails/">dip powder</a>, crisp <a href="/services/french-tip-nails/">French tips</a> and <a href="/services/nail-art/">custom nail art</a> from whatever photo you bring. We also <a href="/services/nail-repair/">fix sets that went wrong elsewhere</a>.</p>
       <p>What clients mention most is how they feel here: a clean salon, friendly staff who take their time, and nails that come out exactly the way they asked.</p>
     </div>
+  </div>
+</section>
+<section class="band band--tight">
+  <div class="wrap narrow prose">
+    <h2>Your first visit</h2>
+    <p>Walk in or call ahead, then pick your service and color. Your tech will ask about the shape, length and design you want, so bring a photo if you have one. Pedicures start with a warm soak in a massage spa chair, and manicures start with shaping and cuticle care.</p>
+    <p>Not sure what to choose? Our <a href="/guides/dip-vs-acrylic-vs-gel/">dip vs acrylic vs gel guide</a> explains the differences, and our <a href="/faq/">FAQ</a> covers walk-ins, booking and kids.</p>
   </div>
 </section>
 <section class="band band--soft band--tight">
@@ -557,7 +590,7 @@ function reviewsPage() {
     schema: [breadcrumb(trail)],
     body: `
 <section class="page-head"><div class="wrap">${crumbs(trail)}
-  <h1>Client reviews</h1>
+  <h1>Top Creative Nails reviews</h1>
   <p class="lede">Real reviews from our Google listing. Thank you to everyone who took the time to write one.</p>
 </div></section>
 <section class="band band--tight"><div class="wrap">
@@ -589,6 +622,13 @@ function visitPage() {
       <h2>Contact</h2>
       <p>Phone: <a href="tel:${site.tel}">${site.phone}</a><br>Facebook: <a href="${site.messenger}" target="_blank" rel="noopener">send us a message</a><br>Instagram: <a href="${site.instagram}" target="_blank" rel="noopener">${site.instagramHandle}</a></p>
       <p>We see clients from across Grand Prairie and nearby Arlington, Mansfield, Cedar Hill and Dallas.</p>
+      <h2>Tips for your visit</h2>
+      <ul class="tips">
+        <li>Walk-ins are welcome during open hours. Weekends get busy, so call ahead if you need a set time.</li>
+        <li>Long acrylic sets and detailed nail art take longer. Mention them when you call so we can plan the time.</li>
+        <li>Save a photo of the design you want from our <a href="/gallery/">gallery</a> or Instagram.</li>
+        <li>Wearing a set from another salon that needs fixing? Tell us so we can plan a <a href="/services/nail-repair/">redo</a>.</li>
+      </ul>
     </div>
     <div class="map map--tall"><iframe title="Map to Top Creative Nails" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Top+Creative+Nails,+830+Mayfield+Rd+Suite+500,+Grand+Prairie,+TX+75052&output=embed"></iframe></div>
   </div>
@@ -606,7 +646,7 @@ function faqPage() {
     description: "Answers about Top Creative Nails in Grand Prairie, TX: hours, walk-ins, booking, services, pricing, nail repair, kids nails and eyebrow waxing.",
     schema: [breadcrumb(trail), faqSchema(faqs)],
     body: `
-<section class="page-head"><div class="wrap">${crumbs(trail)}<h1>Frequently asked questions</h1></div></section>
+<section class="page-head"><div class="wrap">${crumbs(trail)}<h1>Nail salon FAQ, Grand Prairie TX</h1></div></section>
 <section class="band band--tight"><div class="wrap narrow">${faqList(faqs)}</div></section>
 <section class="band band--soft band--tight"><div class="wrap cta-row cta-row--center">${bookBtn("Call (972) 264-2744")}<a class="btn btn--outline" href="/visit/">Hours and directions</a></div></section>`,
   });
@@ -655,6 +695,82 @@ function privacyPage() {
   <p>Your browser stores one small setting (in local storage) to remember that you closed the welcome message, so it does not show again. You can clear it at any time in your browser settings.</p>
   <p>The map on our Visit page is provided by Google Maps and is subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>. Links to Facebook and Instagram take you to those services, which have their own policies.</p>
   <p>Questions? Call us at <a href="tel:${site.tel}">${site.phone}</a>.</p>
+</div></section>`,
+  });
+}
+
+function guidePage(g) {
+  const trail = [{ name: site.name, href: "/" }, { name: "Guides", href: `/guides/${g.slug}/` }, { name: g.crumb, href: `/guides/${g.slug}/` }].filter((t, i) => i !== 1);
+  const article = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: g.h1,
+    description: g.description,
+    url: `${D}/guides/${g.slug}/`,
+    author: { "@id": businessId },
+    publisher: { "@id": businessId },
+    image: `${D}/assets/img/nails-07-1080.webp`,
+  };
+  page({
+    pathName: `/guides/${g.slug}/`,
+    current: "",
+    title: g.title,
+    description: g.description,
+    schema: [breadcrumb(trail), article, faqSchema(g.faqs)],
+    body: `
+<section class="page-head"><div class="wrap narrow">${crumbs(trail)}
+  <h1>${g.h1}</h1>
+  ${g.intro.map((p) => `<p class="lede">${p}</p>`).join("")}
+</div></section>
+<section class="band band--tight"><div class="wrap narrow">
+  <div class="table-wrap"><table class="compare">
+    <thead><tr>${g.table.head.map((h) => `<th scope="col">${h}</th>`).join("")}</tr></thead>
+    <tbody>${g.table.rows.map((r) => `<tr><th scope="row">${r[0]}</th>${r.slice(1).map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>
+  </table></div>
+</div></section>
+<section class="band band--soft band--tight"><div class="wrap narrow prose">
+  ${g.sections.map((s) => `<h2>${s.h2}</h2>${s.paras.map((p) => `<p>${p}</p>`).join("")}`).join("")}
+</div></section>
+<section class="band band--tight"><div class="wrap narrow">
+  <h2>Common questions</h2>
+  ${faqList(g.faqs)}
+  <div class="cta-row">${bookBtn("Call to book")}<a class="btn btn--outline" href="/services/">See all services</a></div>
+</div></section>`,
+  });
+}
+
+function spanishPage() {
+  const es = spanish;
+  page({
+    pathName: "/es/",
+    current: "",
+    lang: "es",
+    title: es.title,
+    description: es.description,
+    schema: [faqSchema(es.faqs)],
+    body: `
+<section class="page-head"><div class="wrap narrow">
+  <p class="eyebrow">En español · <a href="/">English</a></p>
+  <h1>${es.h1}</h1>
+  ${es.intro.map((p) => `<p class="lede">${p}</p>`).join("")}
+  <div class="cta-row">${bookBtn("Llamar (972) 264-2744")}<a class="btn btn--outline" href="${site.directions}" target="_blank" rel="noopener">Cómo llegar</a></div>
+</div></section>
+<section class="band band--tight"><div class="wrap">
+  <h2>Servicios</h2>
+  <ul class="svc-list">${es.services.map((s) => `<li><a href="/services/${s.slug}/" hreflang="en"><strong>${s.name}</strong><span>${s.text}</span><em>Más información (en inglés) →</em></a></li>`).join("")}</ul>
+</div></section>
+<section class="band band--soft band--tight"><div class="wrap split visit">
+  <div class="prose">
+    <h2>Horario</h2>
+    <table class="hours">${es.hours.map((h) => `<tr><th scope="row">${h[0]}</th><td>${h[1]}</td></tr>`).join("")}</table>
+    <h2>Dirección</h2>
+    <p>${site.street}<br>${site.city}, ${site.region} ${site.zip}<br><a href="tel:${site.tel}">${site.phone}</a></p>
+  </div>
+  <div class="map"><iframe title="Mapa a Top Creative Nails" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Top+Creative+Nails,+830+Mayfield+Rd+Suite+500,+Grand+Prairie,+TX+75052&output=embed&hl=es"></iframe></div>
+</div></section>
+<section class="band band--tight"><div class="wrap narrow">
+  <h2>Preguntas frecuentes</h2>
+  ${faqList(es.faqs)}
 </div></section>`,
   });
 }
@@ -727,6 +843,8 @@ visitPage();
 faqPage();
 bookPage();
 privacyPage();
+guides.forEach(guidePage);
+spanishPage();
 notFound();
 crawlFiles();
 

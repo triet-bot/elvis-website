@@ -41,12 +41,14 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/assets/img/favicon-256.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/assets/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Top Creative Nails","item":"https://www.topcreativenails.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.topcreativenails.com/services/"},{"@type":"ListItem","position":3,"name":"Eyebrow waxing","item":"https://www.topcreativenails.com/services/eyebrow-waxing/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Eyebrow waxing","serviceType":"Eyebrow waxing","description":"Get your brows shaped in the same visit as your nails. Eyebrow waxing takes a few minutes and cleans up stray hairs while keeping your natural arch.","url":"https://www.topcreativenails.com/services/eyebrow-waxing/","provider":{"@id":"https://www.topcreativenails.com/#nailsalon"},"areaServed":{"@type":"City","name":"Grand Prairie"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I add eyebrow waxing to my nail appointment?","acceptedAnswer":{"@type":"Answer","text":"Yes. It is a quick add-on to any manicure or pedicure. Just ask at check-in."}},{"@type":"Question","name":"Will you keep my natural brow shape?","acceptedAnswer":{"@type":"Answer","text":"Yes. The goal is to clean up stray hairs and define your natural arch. Tell your tech how full you like your brows."}},{"@type":"Question","name":"How often should I wax my eyebrows?","acceptedAnswer":{"@type":"Answer","text":"Most people come back every three to five weeks."}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -62,7 +64,7 @@
         <li><a href="/services/" aria-current="page">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li>
         <li class="nav__more">
           <button class="nav__more-btn" aria-expanded="false">More <span aria-hidden="true">▾</span></button>
-          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -88,6 +90,20 @@
     <h2>What's included</h2>
     <dl class="items"><div><dt>Eyebrow wax</dt><dd>Shape and clean up</dd></div><div><dt>Add-on</dt><dd>Easy to pair with any nail service</dd></div></dl>
     <p><a href="/services/#waxing">See it with the other waxing →</a></p>
+  </div>
+</section>
+<section class="band band--soft band--tight">
+  <div class="wrap narrow">
+    <h2>Time and wear</h2>
+    <dl class="items"><div><dt>How long it takes</dt><dd>About 10 to 15 minutes</dd></div><div><dt>How long it lasts</dt><dd>Usually 3 to 5 weeks before regrowth needs a cleanup</dd></div></dl>
+    <h2>Aftercare tips</h2>
+    <ul class="tips"><li>Skip makeup and heavy creams on the area for the rest of the day.</li><li>Avoid hot showers, saunas and direct sun on fresh skin for about a day.</li><li>Let brows grow for a few weeks between waxes for the best shape.</li></ul>
+  </div>
+</section>
+<section class="band band--tight">
+  <div class="wrap narrow">
+    <h2>Eyebrow waxing questions</h2>
+    <div class="faq"><details class="faq__item"><summary>Can I add eyebrow waxing to my nail appointment?</summary><div class="faq__a"><p>Yes. It is a quick add-on to any <a href="/services/classic-manicure/">manicure</a> or <a href="/services/pedicure/">pedicure</a>. Just ask at check-in.</p></div></details><details class="faq__item"><summary>Will you keep my natural brow shape?</summary><div class="faq__a"><p>Yes. The goal is to clean up stray hairs and define your natural arch. Tell your tech how full you like your brows.</p></div></details><details class="faq__item"><summary>How often should I wax my eyebrows?</summary><div class="faq__a"><p>Most people come back every three to five weeks.</p></div></details></div>
   </div>
 </section>
 
@@ -124,7 +140,7 @@
     <div>
       <h2 class="footer-h">Explore</h2>
       <ul class="footer-links">
-        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li>
       </ul>
       <p class="socials"><a href="https://www.instagram.com/thetopcreativenails/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/people/The-Top-Creative-Nail-Official/61567842008159/" target="_blank" rel="noopener">Facebook</a></p>
     </div>

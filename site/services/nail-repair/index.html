@@ -41,12 +41,14 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/assets/img/favicon-256.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/assets/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Top Creative Nails","item":"https://www.topcreativenails.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.topcreativenails.com/services/"},{"@type":"ListItem","position":3,"name":"Nail repair and redo","item":"https://www.topcreativenails.com/services/nail-repair/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Nail repair and redo","serviceType":"Nail repair and redo","description":"A broken nail does not have to mean a whole new set. Come in and we will fix the one nail, or rebalance the set if it needs more.","url":"https://www.topcreativenails.com/services/nail-repair/","provider":{"@id":"https://www.topcreativenails.com/#nailsalon"},"areaServed":{"@type":"City","name":"Grand Prairie"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can you fix nails that were done somewhere else?","acceptedAnswer":{"@type":"Answer","text":"Yes. We regularly fix and redo sets from other salons, including dip and acrylic sets that came out lumpy or uneven."}},{"@type":"Question","name":"Do I need a whole new set if one nail breaks?","acceptedAnswer":{"@type":"Answer","text":"Usually not. One broken or lifted nail can be repaired on its own."}},{"@type":"Question","name":"What if I do not like my nail art from another salon?","acceptedAnswer":{"@type":"Answer","text":"Bring it in. We can rework the design or start fresh with new nail art."}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -62,7 +64,7 @@
         <li><a href="/services/" aria-current="page">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li>
         <li class="nav__more">
           <button class="nav__more-btn" aria-expanded="false">More <span aria-hidden="true">▾</span></button>
-          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -88,6 +90,20 @@
     <h2>What's included</h2>
     <dl class="items"><div><dt>Single nail repair</dt><dd>Fix a broken or lifted nail</dd></div><div><dt>Set redo</dt><dd>Remove and rebuild a set that went wrong</dd></div><div><dt>Design fix</dt><dd>Rework nail art you are not happy with</dd></div></dl>
     <p><a href="/services/#art">See it with the other nail art and repair →</a></p>
+  </div>
+</section>
+<section class="band band--soft band--tight">
+  <div class="wrap narrow">
+    <h2>Time and wear</h2>
+    <dl class="items"><div><dt>How long it takes</dt><dd>A single nail repair takes about 10 to 15 minutes; a full redo takes about as long as a new set</dd></div><div><dt>How long it lasts</dt><dd>A repaired nail lasts as long as the rest of the set</dd></div></dl>
+    <h2>Aftercare tips</h2>
+    <ul class="tips"><li>Do not use nail glue at home on a lifted nail. It can trap moisture underneath.</li><li>Come in as soon as a nail lifts or cracks so it can be fixed before it breaks.</li><li>Keep up with fills to prevent future breaks.</li></ul>
+  </div>
+</section>
+<section class="band band--tight">
+  <div class="wrap narrow">
+    <h2>Nail repair and redo questions</h2>
+    <div class="faq"><details class="faq__item"><summary>Can you fix nails that were done somewhere else?</summary><div class="faq__a"><p>Yes. We regularly fix and redo sets from other salons, including dip and acrylic sets that came out lumpy or uneven.</p></div></details><details class="faq__item"><summary>Do I need a whole new set if one nail breaks?</summary><div class="faq__a"><p>Usually not. One broken or lifted nail can be repaired on its own.</p></div></details><details class="faq__item"><summary>What if I do not like my nail art from another salon?</summary><div class="faq__a"><p>Bring it in. We can rework the design or start fresh with new <a href="/services/nail-art/">nail art</a>.</p></div></details></div>
   </div>
 </section>
 
@@ -124,7 +140,7 @@
     <div>
       <h2 class="footer-h">Explore</h2>
       <ul class="footer-links">
-        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li>
       </ul>
       <p class="socials"><a href="https://www.instagram.com/thetopcreativenails/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/people/The-Top-Creative-Nail-Official/61567842008159/" target="_blank" rel="noopener">Facebook</a></p>
     </div>

@@ -41,12 +41,14 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/assets/img/favicon-256.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/assets/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Top Creative Nails","item":"https://www.topcreativenails.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.topcreativenails.com/services/"},{"@type":"ListItem","position":3,"name":"Pedicure","item":"https://www.topcreativenails.com/services/pedicure/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Pedicure","serviceType":"Pedicure","description":"Our pedicures happen in a row of white massage spa chairs along the salon wall. You soak, your tech trims and shapes your toenails, tidies the cuticles, smooths rough heels and finishes with a lower-leg massage and polish.","url":"https://www.topcreativenails.com/services/pedicure/","provider":{"@id":"https://www.topcreativenails.com/#nailsalon"},"areaServed":{"@type":"City","name":"Grand Prairie"},"image":"https://www.topcreativenails.com/assets/img/pedicure-chairs-1080.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is included in a pedicure?","acceptedAnswer":{"@type":"Answer","text":"A warm soak in a massage spa chair, toenail trimming and shaping, cuticle care, callus smoothing, a lower-leg massage and polish of your choice."}},{"@type":"Question","name":"Can I get gel polish on my toes?","acceptedAnswer":{"@type":"Answer","text":"Yes. Gel on toes is dry before you leave and lasts longer than regular polish."}},{"@type":"Question","name":"Can I get a manicure and pedicure at the same time?","acceptedAnswer":{"@type":"Answer","text":"Yes. Ask for both when you call or check in. Many clients pair a pedicure with a classic or gel manicure."}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -62,7 +64,7 @@
         <li><a href="/services/" aria-current="page">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li>
         <li class="nav__more">
           <button class="nav__more-btn" aria-expanded="false">More <span aria-hidden="true">▾</span></button>
-          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -88,6 +90,20 @@
     <h2>What's included</h2>
     <dl class="items"><div><dt>Spa pedicure</dt><dd>Soak, nail care, callus smoothing, massage, polish</dd></div><div><dt>Gel polish on toes</dt><dd>Longer-lasting shine</dd></div><div><dt>Toe nail art</dt><dd>Hand-painted designs, accents and gems</dd></div><div><dt>Mani and pedi together</dt><dd>Ask to book both in one visit</dd></div></dl>
     <p><a href="/services/#pedicures">See it with the other pedicures →</a></p>
+  </div>
+</section>
+<section class="band band--soft band--tight">
+  <div class="wrap narrow">
+    <h2>Time and wear</h2>
+    <dl class="items"><div><dt>How long it takes</dt><dd>About 45 minutes to 1 hour</dd></div><div><dt>How long it lasts</dt><dd>Polish usually lasts 2 to 3 weeks on toes, longer with gel</dd></div></dl>
+    <h2>Aftercare tips</h2>
+    <ul class="tips"><li>Wear open-toe shoes home so fresh polish does not smudge.</li><li>Moisturize your heels daily to keep calluses from building back up.</li><li>Book every 3 to 4 weeks to keep feet smooth and polish fresh.</li></ul>
+  </div>
+</section>
+<section class="band band--tight">
+  <div class="wrap narrow">
+    <h2>Pedicure questions</h2>
+    <div class="faq"><details class="faq__item"><summary>What is included in a pedicure?</summary><div class="faq__a"><p>A warm soak in a massage spa chair, toenail trimming and shaping, cuticle care, callus smoothing, a lower-leg massage and polish of your choice.</p></div></details><details class="faq__item"><summary>Can I get gel polish on my toes?</summary><div class="faq__a"><p>Yes. Gel on toes is dry before you leave and lasts longer than regular polish.</p></div></details><details class="faq__item"><summary>Can I get a manicure and pedicure at the same time?</summary><div class="faq__a"><p>Yes. Ask for both when you call or check in. Many clients pair a pedicure with a <a href="/services/classic-manicure/">classic</a> or <a href="/services/gel-manicure/">gel manicure</a>.</p></div></details></div>
   </div>
 </section>
 
@@ -124,7 +140,7 @@
     <div>
       <h2 class="footer-h">Explore</h2>
       <ul class="footer-links">
-        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li>
       </ul>
       <p class="socials"><a href="https://www.instagram.com/thetopcreativenails/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/people/The-Top-Creative-Nail-Official/61567842008159/" target="_blank" rel="noopener">Facebook</a></p>
     </div>

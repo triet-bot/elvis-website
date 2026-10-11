@@ -41,12 +41,14 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" href="/assets/img/favicon-256.png">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/assets/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/site.css">
+
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Top Creative Nails","item":"https://www.topcreativenails.com/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://www.topcreativenails.com/services/"},{"@type":"ListItem","position":3,"name":"Gel manicure","item":"https://www.topcreativenails.com/services/gel-manicure/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Gel manicure","serviceType":"Gel manicure","description":"A gel manicure starts like a classic manicure, then swaps regular polish for gel color cured under an LED lamp. You leave with nails that are fully dry and shine like glass.","url":"https://www.topcreativenails.com/services/gel-manicure/","provider":{"@id":"https://www.topcreativenails.com/#nailsalon"},"areaServed":{"@type":"City","name":"Grand Prairie"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does a gel manicure last?","acceptedAnswer":{"@type":"Answer","text":"Most clients get about two to three weeks before they want a change, depending on how fast their nails grow and how hard they are on their hands."}},{"@type":"Question","name":"Is gel the same as dip or acrylic?","acceptedAnswer":{"@type":"Answer","text":"No. Gel is a polish cured under a lamp on your natural nails. Dip powder and acrylic build a stronger layer and can add length. See our dip vs acrylic vs gel guide."}},{"@type":"Question","name":"Can you take off my old gel before the new one?","acceptedAnswer":{"@type":"Answer","text":"Yes. Mention it when you check in so we can include removal in your appointment."}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -62,7 +64,7 @@
         <li><a href="/services/" aria-current="page">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li>
         <li class="nav__more">
           <button class="nav__more-btn" aria-expanded="false">More <span aria-hidden="true">▾</span></button>
-          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li></ul>
+          <ul class="nav__sub"><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -88,6 +90,20 @@
     <h2>What's included</h2>
     <dl class="items"><div><dt>Gel color</dt><dd>Cured under LED, dry before you leave</dd></div><div><dt>Gel French</dt><dd>Classic or colored tips in gel</dd></div><div><dt>Gel removal</dt><dd>Ask the front desk when you book</dd></div></dl>
     <p><a href="/services/#manicures">See it with the other manicures →</a></p>
+  </div>
+</section>
+<section class="band band--soft band--tight">
+  <div class="wrap narrow">
+    <h2>Time and wear</h2>
+    <dl class="items"><div><dt>How long it takes</dt><dd>About 45 minutes to 1 hour</dd></div><div><dt>How long it lasts</dt><dd>Usually 2 to 3 weeks</dd></div></dl>
+    <h2>Aftercare tips</h2>
+    <ul class="tips"><li>Gel is cured and dry before you leave, so you can use your hands right away.</li><li>Do not peel or pick off gel. It can take layers of your natural nail with it.</li><li>Come back for professional removal when you are ready for a new color.</li></ul>
+  </div>
+</section>
+<section class="band band--tight">
+  <div class="wrap narrow">
+    <h2>Gel manicure questions</h2>
+    <div class="faq"><details class="faq__item"><summary>How long does a gel manicure last?</summary><div class="faq__a"><p>Most clients get about two to three weeks before they want a change, depending on how fast their nails grow and how hard they are on their hands.</p></div></details><details class="faq__item"><summary>Is gel the same as dip or acrylic?</summary><div class="faq__a"><p>No. Gel is a polish cured under a lamp on your natural nails. <a href="/services/dip-powder-nails/">Dip powder</a> and <a href="/services/acrylic-nails/">acrylic</a> build a stronger layer and can add length. See our <a href="/guides/dip-vs-acrylic-vs-gel/">dip vs acrylic vs gel guide</a>.</p></div></details><details class="faq__item"><summary>Can you take off my old gel before the new one?</summary><div class="faq__a"><p>Yes. Mention it when you check in so we can include removal in your appointment.</p></div></details></div>
   </div>
 </section>
 
@@ -124,7 +140,7 @@
     <div>
       <h2 class="footer-h">Explore</h2>
       <ul class="footer-links">
-        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/book/">How to book</a></li><li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/services/">Services</a></li><li><a href="/gallery/">Gallery</a></li><li><a href="/about/">About</a></li><li><a href="/reviews/">Reviews</a></li><li><a href="/visit/">Visit & Hours</a></li><li><a href="/faq/">FAQ</a></li><li><a href="/guides/dip-vs-acrylic-vs-gel/">Dip vs acrylic vs gel</a></li><li><a href="/book/">How to book</a></li><li><a href="/es/">Español</a></li><li><a href="/privacy/">Privacy</a></li>
       </ul>
       <p class="socials"><a href="https://www.instagram.com/thetopcreativenails/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/people/The-Top-Creative-Nail-Official/61567842008159/" target="_blank" rel="noopener">Facebook</a></p>
     </div>

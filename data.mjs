@@ -333,6 +333,8 @@ export const nav = [
 ];
 export const navMore = [
   { label: "FAQ", href: "/faq/" },
+  { label: "Dip vs acrylic vs gel", href: "/guides/dip-vs-acrylic-vs-gel/" },
   { label: "How to book", href: "/book/" },
+  { label: "Español", href: "/es/" },
   { label: "Privacy", href: "/privacy/" },
 ];
