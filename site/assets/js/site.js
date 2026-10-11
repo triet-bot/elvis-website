@@ -144,35 +144,36 @@
     $("spot-prev").addEventListener("click", () => go(-1));
     dots.forEach((d, i) => d.addEventListener("click", () => focusBy(i, WORKS.length)));
 
-    // Autoplay: glide to the next card every AUTO_MS. Pauses on hover, keyboard focus, any
-    // interaction (resumes after IDLE_MS), when the hero is off-screen, and never runs for
-    // reduced-motion users.
-    const AUTO_MS = 3200, IDLE_MS = 6000;
-    let hovering = false, focused = false, inView = true, ease = 0.14;
-    let lastInteract = -Infinity, lastAdvance = performance.now();
-    const interact = () => { lastInteract = performance.now(); ease = 0.14; };
+    // Auto-run: the ring turns continuously (DRIFT deg/s), slowing to HOVER_SLOW on hover. Any
+    // drag / arrow / button / dot interaction or keyboard focus hands control to snap-to-card
+    // mode; the drift resumes IDLE_MS after the last interaction. Off for reduced-motion users.
+    const DRIFT = 4.5, HOVER_SLOW = 0.3, IDLE_MS = 4000;
+    let hovering = false, focused = false, inView = true, speed = 1;
+    let lastInteract = -Infinity, lastT = performance.now();
+    const interact = () => { lastInteract = performance.now(); };
     stage.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hovering = true; });
     stage.addEventListener("pointerleave", () => { hovering = false; });
-    stage.addEventListener("focus", () => { focused = true; });
+    stage.addEventListener("focus", () => { focused = true; interact(); });
     stage.addEventListener("blur", () => { focused = false; });
     ["pointerdown", "keydown"].forEach((t) => stage.addEventListener(t, interact));
     [$("spot-next"), $("spot-prev"), ...dots].forEach((b) => b.addEventListener("click", interact));
     if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => { inView = e.isIntersecting; }).observe(spot);
-    const autoplay = (now) => {
-      if (REDUCE || dragging || hovering || focused || !inView || document.hidden) { lastAdvance = now; return; }
-      if (now - lastInteract < IDLE_MS || Math.abs(vel) >= 0.05) { lastAdvance = now; return; }
-      if (now - lastAdvance >= AUTO_MS) { go(1); ease = 0.06; lastAdvance = now; }
-    };
 
     const tick = (now = performance.now()) => {
-      autoplay(now);
-      if (!dragging) {
+      const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+      const drifting = !REDUCE && !dragging && !focused && inView && now - lastInteract > IDLE_MS && Math.abs(vel) < 0.05;
+      if (drifting) {
+        // ease the speed toward full (or hover-slow) so starts and slow-downs are smooth
+        speed += ((hovering ? HOVER_SLOW : 1) - speed) * Math.min(1, dt * 3);
+        rot -= DRIFT * speed * dt; settled = false;
+      } else if (!dragging) {
+        speed = 0;
         rot += vel; vel *= CFG.damp;
         if (Math.abs(vel) < 0.05) {
           if (!settled) { targetIndex = nearestCenter(); settled = true; }
           const diff = -targetIndex * stepDeg() - rot;
           if (Math.abs(diff) < 0.01) rot = -targetIndex * stepDeg();
-          else rot += diff * (REDUCE ? 1 : ease);
+          else rot += diff * (REDUCE ? 1 : 0.14);
         } else settled = false;
       }
       applyRot(); render();
