@@ -2,11 +2,15 @@
 // Usage: node build.mjs   → writes every page + llms.txt / robots.txt / sitemap.xml into ./site
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { site, hours, gallery, extraImages, serviceCategories, services, reviews, faqs, nav, navMore } from "./data.mjs";
 import { serviceDetails } from "./service-details.mjs";
 import { guides, spanish } from "./pages-extra.mjs";
 
 const OUT = path.resolve("site");
+// Assets are served with a 1-year immutable cache, so CSS/JS URLs carry a content fingerprint.
+const ver = (p) => crypto.createHash("sha1").update(fs.readFileSync(path.join(OUT, p))).digest("hex").slice(0, 10);
+const asset = (p) => `/${p}?v=${ver(p)}`;
 const D = site.domain;
 const bySlug = Object.fromEntries(services.map((s) => [s.slug, s]));
 const warnings = [];
@@ -147,8 +151,8 @@ function head({ title, description, pathName, ogImage = "/assets/img/og-image.jp
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="${asset("assets/fonts/fonts.css")}">
+<link rel="stylesheet" href="${asset("assets/css/site.css")}">
 ${alternates.map((a) => `<link rel="alternate" hreflang="${a.lang}" href="${D}${a.href}">`).join("\n")}
 ${schema.map(ld).join("\n")}
 </head>`;
@@ -245,7 +249,7 @@ ${body}
 </main>
 ${footer()}
 ${promo()}
-<script src="/assets/js/site.js" defer></script>
+<script src="${asset("assets/js/site.js")}" defer></script>
 </body>
 </html>
 `;
@@ -832,7 +836,7 @@ function spanishPage() {
 
 function notFound() {
   const html = `${head({ title: "Page not found | Top Creative Nails", description: "This page could not be found. Visit Top Creative Nails in Grand Prairie, TX for acrylic, dip, gel, pedicures and custom nail art. Call (972) 264-2744.", pathName: "/404/" })}
-<body>${header("")}<main id="main"><section class="page-head"><div class="wrap narrow"><h1>Page not found</h1><p class="lede">That page does not exist. Try our <a href="/services/">services</a> or <a href="/">home page</a>.</p></div></section></main>${footer()}<script src="/assets/js/site.js" defer></script></body></html>`;
+<body>${header("")}<main id="main"><section class="page-head"><div class="wrap narrow"><h1>Page not found</h1><p class="lede">That page does not exist. Try our <a href="/services/">services</a> or <a href="/">home page</a>.</p></div></section></main>${footer()}<script src="${asset("assets/js/site.js")}" defer></script></body></html>`;
   fs.writeFileSync(path.join(OUT, "404.html"), html.replace('<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">', '<meta name="robots" content="noindex">'));
 }
 
